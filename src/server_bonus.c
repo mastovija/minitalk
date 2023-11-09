@@ -4,7 +4,7 @@
 void signal_handler (int signal, siginfo_t *info, void *context)
 {
     static int current_bit;
-    static char c;
+    static int c;
 
     (void)context;
     if (signal == SIGUSR1)
