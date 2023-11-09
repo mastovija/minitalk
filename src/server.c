@@ -4,7 +4,7 @@
 void signal_handler (int signal)
 {
     static int current_bit;
-    static char c;
+    static int c;
 
     if (signal == SIGUSR1)
         c |= (1 << current_bit);
