@@ -1,62 +1,70 @@
+# Binary Names
+CLIENT_NAME = client
+SERVER_NAME = server
+CLIENT_BONUS_NAME = client_bonus
+SERVER_BONUS_NAME = server_bonus
+PRINTF_LIB = libftprintf.a
 
-NAMEC = client
-NAMES = server
-BONUS_NAMEC = client_bonus
-BONUS_NAMES = server_bonus
-PRINTF = libftprintf.a
-SRCC_FILES =	client.c
-SRCS_FILES =	server.c
-BONUSC_FILES = client_bonus.c 
-BONUSS_FILES = server_bonus.c
-SRC_DIR = src/
-SRCC = $(addprefix $(SRC_DIR), $(SRCC_FILES))
-SRCS = $(addprefix $(SRC_DIR), $(SRCS_FILES))
-BONUSC = $(addprefix $(SRC_DIR), $(BONUSC_FILES))
-BONUSS = $(addprefix $(SRC_DIR), $(BONUSS_FILES))
-OBJC = ${SRCC:.c=.o}
-OBJS = ${SRCS:.c=.o}
-OBJBC = ${BONUSC:.c=.o}
-OBJBS = ${BONUSS:.c=.o}
-CC			= cc
-CFLAGS		= -Wall -Werror -Wextra
+# Directories
+SRC_DIR = src
+PRINTF_DIR = printf
+
+# Source Files
+CLIENT_SRC_FILES = client.c
+SERVER_SRC_FILES = server.c
+CLIENT_BONUS_FILES = client_bonus.c
+SERVER_BONUS_FILES = server_bonus.c
+
+# Full Paths
+CLIENT_SRC = $(addprefix $(SRC_DIR)/, $(CLIENT_SRC_FILES))
+SERVER_SRC = $(addprefix $(SRC_DIR)/, $(SERVER_SRC_FILES))
+CLIENT_BONUS_SRC = $(addprefix $(SRC_DIR)/, $(CLIENT_BONUS_FILES))
+SERVER_BONUS_SRC = $(addprefix $(SRC_DIR)/, $(SERVER_BONUS_FILES))
+
+# Object Files
+CLIENT_OBJ = ${CLIENT_SRC:.c=.o}
+SERVER_OBJ = ${SERVER_SRC:.c=.o}
+CLIENT_BONUS_OBJ = ${CLIENT_BONUS_SRC:.c=.o}
+SERVER_BONUS_OBJ = ${SERVER_BONUS_SRC:.c=.o}
+
+# Compiler and Flags
+CC = cc
+CFLAGS = -Wall -Werror -Wextra
 INCLUDE = -I include
+
+# Commands
 RM = rm -rf
 
-all:	$(NAMEC) $(NAMES)
+# Targets
+.PHONY: all bonus clean fclean re
 
-$(NAMEC) : $(OBJC)
-		@make -C printf
-		$(CC) $(CFLAGS) $(OBJC) $(INCLUDE) printf/$(PRINTF) -o $(NAMEC)
+all: $(CLIENT_NAME) $(SERVER_NAME)
 
-$(NAMES) : $(OBJS)
-		@make -C printf
-		$(CC) $(CFLAGS) $(OBJS) $(INCLUDE) printf/$(PRINTF) -o $(NAMES)
+bonus: $(CLIENT_BONUS_NAME) $(SERVER_BONUS_NAME)
 
-bonus : $(BONUS_NAMEC) $(BONUS_NAMES)
+$(CLIENT_NAME): $(CLIENT_OBJ)
+	@make -C $(PRINTF_DIR)
+	$(CC) $(CFLAGS) $(CLIENT_OBJ) $(INCLUDE) $(PRINTF_DIR)/$(PRINTF_LIB) -o $(CLIENT_NAME)
 
-$(BONUS_NAMEC) : $(OBJBC)
-				@make -C printf
-				$(CC) $(CFLAGS) $(OBJBC)  $(INCLUDE)  printf/$(PRINTF) -o $(BONUS_NAMEC)
+$(SERVER_NAME): $(SERVER_OBJ)
+	@make -C $(PRINTF_DIR)
+	$(CC) $(CFLAGS) $(SERVER_OBJ) $(INCLUDE) $(PRINTF_DIR)/$(PRINTF_LIB) -o $(SERVER_NAME)
 
-$(BONUS_NAMES) : $(OBJBS)
-				@make -C printf
-				$(CC) $(CFLAGS) $(OBJBS)  $(INCLUDE)  printf/$(PRINTF) -o $(BONUS_NAMES)
+$(CLIENT_BONUS_NAME): $(CLIENT_BONUS_OBJ)
+	@make -C $(PRINTF_DIR)
+	$(CC) $(CFLAGS) $(CLIENT_BONUS_OBJ) $(INCLUDE) $(PRINTF_DIR)/$(PRINTF_LIB) -o $(CLIENT_BONUS_NAME)
 
-clean :
-		@make clean -C printf
-		${RM} ${OBJC}
-		${RM} ${OBJS}
-		${RM} ${OBJBC}
-		${RM} ${OBJBS}
+$(SERVER_BONUS_NAME): $(SERVER_BONUS_OBJ)
+	@make -C $(PRINTF_DIR)
+	$(CC) $(CFLAGS) $(SERVER_BONUS_OBJ) $(INCLUDE) $(PRINTF_DIR)/$(PRINTF_LIB) -o $(SERVER_BONUS_NAME)
 
-fclean : clean
-		@make fclean -C printf
-		${RM} $(NAMEC)
-		${RM} $(NAMES)
-		${RM} $(BONUS_NAMEC)
-		${RM} $(BONUS_NAMES)
-		${RM} $(PRINTF)
+clean:
+	@make clean -C $(PRINTF_DIR)
+	$(RM) $(CLIENT_OBJ) $(SERVER_OBJ) $(CLIENT_BONUS_OBJ) $(SERVER_BONUS_OBJ)
 
-re : fclean all
+fclean: clean
+	@make fclean -C $(PRINTF_DIR)
+	$(RM) $(CLIENT_NAME) $(SERVER_NAME) $(CLIENT_BONUS_NAME) $(SERVER_BONUS_NAME) $(PRINTF_DIR)/$(PRINTF_LIB)
 
-.PHONY:		all bonus clean fclean re
+re: fclean all
+
