@@ -12,8 +12,6 @@
 
 #include "../include/minitalk_bonus.h"
 
-
-
 void	signal_handler(int signal, siginfo_t *info, void *context)
 {
 	static int	current_bit;
