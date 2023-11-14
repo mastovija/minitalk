@@ -62,7 +62,7 @@ int	char_to_signals(int pid, char c)
 			if (kill(pid, SIGUSR2) == -1)
 				return (2);
 		}
-		usleep(500);
+		usleep(100);
 		current_bit++;
 	}
 	return (0);
