@@ -60,6 +60,7 @@ char	*ft_itoa(int n)
 	unsigned int		number;
 	int					sign;
 
+	(void)sign;
 	sign = 1;
 	len = ft_len(n);
 	s = (char *)malloc(sizeof(char) * (len + 1));
