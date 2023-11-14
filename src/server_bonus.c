@@ -47,11 +47,13 @@ int	main(int argc, char **argv)
 	}
 	pid = getpid();
 	ft_printf("PID: %d\n", pid);
-	sa.sa_sigaction = signal_handler;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_SIGINFO;
-	sigaction(SIGUSR1, &sa, NULL);
-	sigaction(SIGUSR2, &sa, NULL);
+    	sa.sa_sigaction = signal_handler;
+    	sigemptyset(&sa.sa_mask);
+    	sigaddset(&sa.sa_mask, SIGUSR1);
+    	sigaddset(&sa.sa_mask, SIGUSR2);
+    	sa.sa_flags = SA_SIGINFO;
+    	sigaction(SIGUSR1, &sa, NULL);
+    	sigaction(SIGUSR2, &sa, NULL);
 	while (1)
 	{
 		pause();
