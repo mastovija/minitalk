@@ -104,21 +104,3 @@ int	ft_printf(const char *format, ...)
 	va_end(vl);
 	return (char_printed);
 }
-/*
-int	main(void)
-{
-	ft_printf(0);
-	printf(0);
-	printf(" %p %p\n", 0, 0);
-	ft_printf(" %p %p\n", 0, 0);
-	ft_printf("Hello, %s!\n", "John");
-	ft_printf("My age is %d.\n", 25);
-	ft_printf("My pointer address is %p.\n", &main);
-	ft_printf("This is a character: %c\n", 'A');
-	ft_printf("Unsigned integer: %u\n", 42);
-	ft_printf("Hexadecimal (lowercase): %x\n", 255);
-	ft_printf("Hexadecimal (uppercase): %X\n", 255);
-	ft_printf("Print a percentage sign: %%\n");
-	return (0);
-}
-*/
