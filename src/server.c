@@ -10,6 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+//SERVER: receives and interprets signals (SIGUSR1 and SIGUSR2)
+//sent by the client.
+//It translates those signals into chars and 
+//reconstruct the transmitted message.
+
+//'1 << current_bit': shifts the binary digit 1 to the left by 'current_bit'
+//creating a mask with a 1 bit at the specified bit position 
+//and 0 bits elsewhere.
+//bitwise OR (|): compares bits of two numbers and if at least one bit is 1, the
+//resulting bit is set to 1, otherwise it is 0.
+//because I use it like |= we compound the bits. 
+//when current_bit is 8 then prints the char
+
 #include "../include/minitalk.h"
 
 void	signal_handler(int signal, siginfo_t *info, void *context)
@@ -29,6 +42,15 @@ void	signal_handler(int signal, siginfo_t *info, void *context)
 		c = 0;
 	}
 }
+
+//sigaction is used to modify the action to be taken when a specific
+//signal occurs.
+//We call the function signal_handler when the signal is received.
+//sigemptyset: ensures that no signals are blocked 
+//(an empty set) during the execution of the signal handler.
+//sigaddset: indicates that when the signal handler is running,
+//SIGUSR1 and 2 will be blocked from interrupting its execution
+//SA_SIGINFO: I use this to get the PID from the client to send the confirmation
 
 int	main(int argc, char **argv)
 {
