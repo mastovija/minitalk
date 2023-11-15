@@ -10,6 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+//CLIENT: sends a message as a series of signals to a specified PID.
+//The message is converted char by char into a sequence of signals.
+//(SIGUSR1 and SIGUSR2) and transmitted to the specified process. 
+//When the message is complete it also sends a signal to end the message.
+
 #include "../include/minitalk.h"
 
 int	ft_atoi(char *str)
@@ -38,6 +43,18 @@ int	ft_atoi(char *str)
 	}
 	return (result * sign);
 }
+
+//It takes a char and sends a signal for each bit of that char (8 bits).
+//If the bit is 1 it sends SIGURS1, if the bit is 0 it sends SIGURS2.
+//'1 << current_bit': shifts the binary digit 1 to the left by 'current_bit'
+//creating a mask with a 1 bit at the specified bit position 
+//and 0 bits elsewhere.
+//bitwise AND (&) between the char and the mask examines only
+//the bit at the specified position in 'c'.
+//it returns 1 if both bits are 1, if not it returns 0.
+//usleep introduces a delay between sending the signals to regulate
+//the transmission rate and ensure that the signals are not sent too fast
+//and create signal overload and the receiving process can process such signals.
 
 int	char_to_signals(int pid, char c)
 {
@@ -80,6 +97,7 @@ int	main(int argc, char **argv)
 		{
 			char_to_signals(pid, '\n');
 		}
+		char_to_signals(pid, '\0');
 	}
 	else
 	{
